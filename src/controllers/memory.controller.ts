@@ -1,16 +1,17 @@
-const Memory = require('../models/Memory');
+import { Request, Response } from 'express';
+import Memory, { IMemory } from '../models/memory.model';
 
 // @desc    Get all memories
 // @route   GET /api/memories
 // @access  Public
-const getMemories = async (req, res) => {
+export const getMemories = async (req: Request, res: Response): Promise<void> => {
     try {
-        const memories = await Memory.find().sort({ createdAt: -1 }); // Newest first
+        const memories: IMemory[] = await Memory.find().sort({ createdAt: -1 }); // Newest first
         res.json({
             message: 'success',
             data: memories
         });
-    } catch (err) {
+    } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
 };
@@ -18,20 +19,22 @@ const getMemories = async (req, res) => {
 // @desc    Add a new memory
 // @route   POST /api/memories
 // @access  Public
-const createMemory = async (req, res) => {
+export const createMemory = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, roleCategory, customRoleTitle, memoryText } = req.body;
 
         if (!name || !roleCategory || !memoryText) {
-            return res.status(400).json({ error: 'Name, Role Category, and Memory Text are required fields.' });
+            res.status(400).json({ error: 'Name, Role Category, and Memory Text are required fields.' });
+            return;
         }
 
         const validCategories = ['Organizer', 'Coordinator', 'Subcoordinator'];
         if (!validCategories.includes(roleCategory)) {
-            return res.status(400).json({ error: 'Invalid Role Category. Must be Organizer, Coordinator, or Subcoordinator.' });
+            res.status(400).json({ error: 'Invalid Role Category. Must be Organizer, Coordinator, or Subcoordinator.' });
+            return;
         }
 
-        const newMemory = new Memory({
+        const newMemory: IMemory = new Memory({
             name,
             roleCategory,
             customRoleTitle,
@@ -44,12 +47,7 @@ const createMemory = async (req, res) => {
             message: 'Memory pinned successfully',
             data: savedMemory
         });
-    } catch (err) {
+    } catch (err: any) {
         res.status(500).json({ error: err.message });
     }
-};
-
-module.exports = {
-    getMemories,
-    createMemory
 };
