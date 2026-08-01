@@ -5,6 +5,7 @@ export interface IMemory extends Document {
     roleCategory: 'Organizer' | 'Coordinator' | 'Subcoordinator';
     customRoleTitle?: string;
     memoryText: string;
+    likes: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -25,6 +26,10 @@ const memorySchema: Schema = new Schema({
     memoryText: {
         type: String,
         required: true,
+    },
+    likes: {
+        type: Number,
+        default: 0,
     },
 }, { timestamps: true });
 

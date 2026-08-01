@@ -72,3 +72,39 @@ Tests the strict enum dropdown validation for the `roleCategory` field.
     ```
 *   **Expected Response (400 Bad Request)**:
     `{ "error": "Invalid Role Category. Must be Organizer, Coordinator, or Subcoordinator." }`
+
+---
+
+## 5. Like a Memory
+Increments the like counter on an existing memory. You need to replace `<memory_id>` in the URL with a real ID from the "Get All Memories" response.
+
+*   **Method**: `PATCH`
+*   **URL**: `/api/memories/<memory_id>/like`
+*   **Headers**: None required
+*   **Body**: None
+*   **Expected Response (200 OK)**:
+    `{ "message": "Memory liked successfully", "data": { ... } }`
+
+---
+
+## 6. Unlike a Memory
+Decrements the like counter on an existing memory (cannot drop below 0). You need to replace `<memory_id>` in the URL with a real ID from the "Get All Memories" response.
+
+*   **Method**: `PATCH`
+*   **URL**: `/api/memories/<memory_id>/unlike`
+*   **Headers**: None required
+*   **Body**: None
+*   **Expected Response (200 OK)**:
+    `{ "message": "Memory unliked successfully", "data": { ... } }`
+
+---
+
+## 7. Delete a Memory
+Deletes an existing memory. You need to replace `<memory_id>` in the URL with a real ID from the "Get All Memories" response.
+
+*   **Method**: `DELETE`
+*   **URL**: `/api/memories/<memory_id>`
+*   **Headers**: None required
+*   **Body**: None
+*   **Expected Response (200 OK)**:
+    `{ "message": "Memory deleted successfully", "data": { ... } }`

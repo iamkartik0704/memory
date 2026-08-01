@@ -49,14 +49,32 @@ Creates and pins a new memory to the wall.
   ```json
   {
       "name": "Your Name",
-      "roleCategory": "Organizer", // Must be Organizer, Coordinator, or Subcoordinator
-      "customRoleTitle": "Lead Organizer", // Optional
+      "roleCategory": "Organizer",
+      "customRoleTitle": "Lead Organizer",
       "memoryText": "Seeing the audience react to the final talk was an unforgettable experience!"
   }
   ```
 - **Validation Rules**:
   - `name`, `roleCategory`, and `memoryText` are **required**.
   - `roleCategory` must exactly match one of the predefined roles.
+
+### Like a Memory
+Increments the like counter on a memory.
+- **URL**: `/api/memories/:id/like`
+- **Method**: `PATCH`
+- **Response**: The updated memory object showing the new like count.
+
+### Unlike a Memory
+Decrements the like counter on a memory (won't drop below 0).
+- **URL**: `/api/memories/:id/unlike`
+- **Method**: `PATCH`
+- **Response**: The updated memory object showing the new like count.
+
+### Delete a Memory (Admin)
+Deletes an existing memory from the wall.
+- **URL**: `/api/memories/:id`
+- **Method**: `DELETE`
+- **Response**: Success message and the deleted memory data.
 
 ---
 
