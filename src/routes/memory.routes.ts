@@ -1,5 +1,8 @@
 import { Router } from 'express';
 import { getMemories, createMemory, likeMemory, unlikeMemory, deleteMemory } from '../controllers/memory';
+import { authenticate } from '../middleware/authenticate';
+import { authorize } from '../middleware/authorize';
+import { AdminRole } from '../types';
 
 const router = Router();
 
@@ -8,7 +11,7 @@ router.route('/')
     .post(createMemory);
 
 router.route('/:id')
-    .delete(deleteMemory);
+    .delete(authenticate, authorize(AdminRole.SuperAdmin, AdminRole.Admin), deleteMemory);
 
 router.route('/:id/like')
     .patch(likeMemory);

@@ -11,12 +11,21 @@ npm install
 ```
 
 ###  Environment Variables
-Create a `.env` file in the root directory and add your MongoDB connection string and preferred port:
+Create a `.env` file in the root directory and add your MongoDB connection string and required auth secrets:
 ```env
 PORT=3000
 MONGO_URI=
+JWT_SECRET=your_super_secret_jwt_string_min_16_chars
+SESSION_SECRET=your_super_secret_session_string_min_16_chars
+SUPERADMIN_EMAIL=admin@tedx.com
+SUPERADMIN_PASSWORD=your_secure_password
 ```
 
+###  Admin Account Setup
+Before managing memories, you must seed the database to create the default SuperAdmin account (using the credentials set in your `.env`):
+```bash
+npx tsx src/scripts/seed.ts
+```
 
 ###  Run the Application
 To start the development server (auto-reloads on changes):
@@ -51,7 +60,7 @@ Creates and pins a new memory to the wall.
       "name": "Your Name",
       "roleCategory": "Organizer",
       "customRoleTitle": "Lead Organizer",
-      "memoryText": "Seeing the audience react to the final talk was an unforgettable experience!"
+      "memoryText": "lorem34"
   }
   ```
 - **Validation Rules**:
@@ -71,11 +80,34 @@ Decrements the like counter on a memory (won't drop below 0).
 - **Response**: The updated memory object showing the new like count.
 
 ### Delete a Memory (Admin)
-Deletes an existing memory from the wall.
+Deletes an existing memory from the wall. Requires an active admin session.
 - **URL**: `/api/memories/:id`
 - **Method**: `DELETE`
+- **Headers**: Automatically authenticates via HTTP-only cookie.
 - **Response**: Success message and the deleted memory data.
 
 ---
 
+## Admin Auth Endpoints
 
+### Login
+Authenticates an admin and sets a secure session cookie.
+- **URL**: `/api/admin/auth/login`
+- **Method**: `POST`
+- **Body**: 
+  ```json
+  {
+    "email": "admin@tedx.com",
+    "password": "your_secure_password"
+  }
+  ```
+
+### Logout
+Destroys the current admin session and clears the cookie.
+- **URL**: `/api/admin/auth/logout`
+- **Method**: `POST`
+
+### Get Current Admin
+Retrieves details of the currently logged-in admin.
+- **URL**: `/api/admin/auth/me`
+- **Method**: `GET`
